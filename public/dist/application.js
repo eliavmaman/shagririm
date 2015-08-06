@@ -47,6 +47,8 @@ angular.element(document).ready(function () {
 ApplicationConfiguration.registerModule('articles');'use strict';
 // Use Applicaion configuration module to register a new module
 ApplicationConfiguration.registerModule('core');'use strict';
+// Use applicaion configuration module to register a new module
+ApplicationConfiguration.registerModule('projects');'use strict';
 // Use Applicaion configuration module to register a new module
 ApplicationConfiguration.registerModule('users');'use strict';
 // Configuring the Articles module
@@ -313,6 +315,99 @@ angular.module('core').service('Menus', [function () {
     //Adding the topbar menu
     this.addMenu('topbar');
   }]);'use strict';
+// Configuring the Articles module
+angular.module('projects').run([
+  'Menus',
+  function (Menus) {
+    // Set top bar menu items
+    Menus.addMenuItem('Y', 'Projects', 'projects', 'dropdown', '/projects(/create)?');
+    Menus.addSubMenuItem('Y', 'projects', 'List Projects', 'projects');
+    Menus.addSubMenuItem('Y', 'projects', 'New Project', 'projects/create');
+  }
+]);'use strict';
+//Setting up route
+angular.module('projects').config([
+  '$stateProvider',
+  function ($stateProvider) {
+    // Projects state routing
+    $stateProvider.state('listProjects', {
+      url: '/projects',
+      templateUrl: 'modules/projects/views/list-projects.client.view.html'
+    }).state('createProject', {
+      url: '/projects/create',
+      templateUrl: 'modules/projects/views/create-project.client.view.html'
+    }).state('viewProject', {
+      url: '/projects/:projectId',
+      templateUrl: 'modules/projects/views/view-project.client.view.html'
+    }).state('editProject', {
+      url: '/projects/:projectId/edit',
+      templateUrl: 'modules/projects/views/edit-project.client.view.html'
+    });
+  }
+]);'use strict';
+// Projects controller
+angular.module('projects').controller('ProjectsController', [
+  '$scope',
+  '$stateParams',
+  '$location',
+  'Authentication',
+  'Projects',
+  function ($scope, $stateParams, $location, Authentication, Projects) {
+    $scope.authentication = Authentication;
+    // Create new Project
+    $scope.create = function () {
+      // Create new Project object
+      var project = new Projects({ name: this.name });
+      // Redirect after save
+      project.$save(function (response) {
+        $location.path('projects/' + response._id);
+        // Clear form fields
+        $scope.name = '';
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+    // Remove existing Project
+    $scope.remove = function (project) {
+      if (project) {
+        project.$remove();
+        for (var i in $scope.projects) {
+          if ($scope.projects[i] === project) {
+            $scope.projects.splice(i, 1);
+          }
+        }
+      } else {
+        $scope.project.$remove(function () {
+          $location.path('projects');
+        });
+      }
+    };
+    // Update existing Project
+    $scope.update = function () {
+      var project = $scope.project;
+      project.$update(function () {
+        $location.path('projects/' + project._id);
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+    // Find a list of Projects
+    $scope.find = function () {
+      $scope.projects = Projects.query();
+    };
+    // Find existing Project
+    $scope.findOne = function () {
+      $scope.project = Projects.get({ projectId: $stateParams.projectId });
+    };
+  }
+]);'use strict';
+//Projects service used to communicate Projects REST endpoints
+angular.module('projects').factory('Projects', [
+  '$resource',
+  function ($resource) {
+    return $resource('projects/:projectId', { projectId: '@_id' }, { update: { method: 'PUT' } });
+  }
+]);'use strict';
 // Config HTTP Error Handling
 angular.module('users').config([
   '$httpProvider',
@@ -388,6 +483,7 @@ angular.module('users').controller('AuthenticationController', [
     // If user is signed in then redirect back home
     if ($scope.authentication.user)
       $location.path('/');
+    $scope.credentials = { userType: 'promoter' };
     $scope.signup = function () {
       $http.post('/auth/signup', $scope.credentials).success(function (response) {
         // If successful we assign the response to the global user model
