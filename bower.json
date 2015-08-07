@@ -14,6 +14,7 @@
     "angular-bootstrap": "~0.11.0",
     "angular-ui-utils": "~0.1.1",
     "angular-ui-router": "~0.2.10",
-    "bootstrap-rtl": "~3.3.2"
+    "bootstrap-rtl": "~3.3.2",
+    "ng-s3upload": "~0.1.2"
   }
 }

@@ -20,6 +20,16 @@
                     <span data-ng-bind="project.user.displayName"></span>
                 </em>
             </small>
+            <div class="form-group">
+                <label>
+                    תמונות של המיזם
+                </label>
+                <ul style="list-style-type: none;">
+                    <li ng-repeat="image in project.images">
+                        <img ng-src="{{image}}" class="thumbnail" style="width: 150px;height: 150px;;" alt=""/>
+                    </li>
+                </ul>
+            </div>
             <div data-ng-show="authentication.user.userType=='marketer'">
                 <a class="btn btn-primary btn-lg loading">שווק את הפרוייקט</a>
             </div>

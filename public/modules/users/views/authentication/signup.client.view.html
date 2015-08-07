@@ -26,16 +26,17 @@
     <div class="col-xs-offset-2 col-xs-8 col-md-offset-5 col-md-2">
         <form name="userForm" data-ng-submit="signup()" class="signin form-horizontal" novalidate autocomplete="off">
             <fieldset>
+                {{credentials}}
                 <div class="form-group">
                     <div class="btn-group" data-toggle="buttons">
                         <label class="btn  btn-default"  ng-class="{'active':credentials.userType=='promoter'}">
-                            <input name="cssPre1" id="css1" value="promoter" ng-click="credentials.userType='promoter'"
+                            <input name="cssPre1" id="css1" value="promoter"
                                    type="radio"
                                    data-ng-model="credentials.userType">אני משווק
                         </label>
                         <label class="btn btn-default" ng-class="{'active':credentials.userType=='marketer'}">
-                            <input name="cssPre1" id="css2" ng-click="credentials.userType='marketer'"
-                                    type="radio"
+                            <input name="cssPre1" id="css2"
+                                    type="radio" value="marketer"
                                    data-ng-model="credentials.userType">אני יזם
                         </label>
 

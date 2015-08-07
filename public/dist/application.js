@@ -11,7 +11,8 @@ var ApplicationConfiguration = function () {
         'ngSanitize',
         'ui.router',
         'ui.bootstrap',
-        'ui.utils'
+        'ui.utils',
+        'ngS3upload'
       ];
     // Add a new vertical module
     var registerModule = function (moduleName, dependencies) {
@@ -55,10 +56,6 @@ ApplicationConfiguration.registerModule('users');'use strict';
 angular.module('articles').run([
   'Menus',
   function (Menus) {
-    // Set top bar menu items
-    Menus.addMenuItem('topbar', 'Articles', 'articles', 'dropdown', '/articles(/create)?');
-    Menus.addSubMenuItem('topbar', 'articles', 'List Articles', 'articles');
-    Menus.addSubMenuItem('topbar', 'articles', 'New Article', 'articles/create');
   }
 ]);'use strict';
 // Setting up route
@@ -320,9 +317,9 @@ angular.module('projects').run([
   'Menus',
   function (Menus) {
     // Set top bar menu items
-    Menus.addMenuItem('Y', 'Projects', 'projects', 'dropdown', '/projects(/create)?');
-    Menus.addSubMenuItem('Y', 'projects', 'List Projects', 'projects');
-    Menus.addSubMenuItem('Y', 'projects', 'New Project', 'projects/create');
+    Menus.addMenuItem('topbar', '\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd', 'projects', 'dropdown', '/projects(/create)?');
+    Menus.addSubMenuItem('topbar', 'projects', '\u05dc\u05e8\u05e9\u05d9\u05de\u05ea \u05d4\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd', 'projects');
+    Menus.addSubMenuItem('topbar', 'projects', '\u05d4\u05e7\u05dd \u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8 \u05d7\u05d3\u05e9', 'projects/create');
   }
 ]);'use strict';
 //Setting up route
@@ -354,15 +351,32 @@ angular.module('projects').controller('ProjectsController', [
   'Projects',
   function ($scope, $stateParams, $location, Authentication, Projects) {
     $scope.authentication = Authentication;
+    $scope.credentials = {
+      languages: [],
+      s3OptionsUri: '/s3upload',
+      image: null
+    };
+    $scope.$watch('credentials.image', function (newValue, oldValue) {
+      if (newValue) {
+        $scope.images.push(newValue);
+        $scope.credentials.image = null;
+      }
+    });
+    $scope.images = [];
     // Create new Project
     $scope.create = function () {
       // Create new Project object
-      var project = new Projects({ name: this.name });
+      var project = new Projects({
+          name: this.name,
+          description: this.description,
+          images: $scope.images
+        });
       // Redirect after save
       project.$save(function (response) {
         $location.path('projects/' + response._id);
         // Clear form fields
         $scope.name = '';
+        $scope.description = '';
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });

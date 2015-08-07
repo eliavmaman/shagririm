@@ -5,12 +5,28 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
   function ($scope, $stateParams, $location, Authentication, Projects) {
     $scope.authentication = Authentication;
 
+    $scope.credentials = {
+      languages: [],
+      s3OptionsUri: '/s3upload',
+      image: null
+    };
+
+    $scope.$watch('credentials.image', function (newValue, oldValue) {
+      if (newValue) {
+        $scope.images.push(newValue);
+        $scope.credentials.image = null;
+      }
+    });
+
+    $scope.images = [];
+
     // Create new Project
     $scope.create = function () {
       // Create new Project object
       var project = new Projects({
         name: this.name,
-        description: this.description
+        description: this.description,
+        images: $scope.images
       });
 
       // Redirect after save
