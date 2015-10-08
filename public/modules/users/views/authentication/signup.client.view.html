@@ -23,7 +23,7 @@
     <!--</a>-->
     <!--</div>-->
     <!--<h3 class="col-md-12 text-center">Or with your email</h3>-->
-    <div class="col-xs-offset-2 col-xs-8 col-md-offset-5 col-md-2">
+    <div class="col-xs-offset-2 col-xs-8 col-md-offset-5 col-md-2 clearfix">
         <form name="userForm" data-ng-submit="signup()" class="signin form-horizontal" novalidate autocomplete="off">
             <fieldset>
                 <img src="modules/images/123.jpg" class="center-block thumbnail">
@@ -69,14 +69,19 @@
                            data-ng-model="credentials.password" placeholder="Password">
                 </div>
                 <div class="text-center form-group">
-                    <button type="submit" class="btn btn-large btn-primary">הרשמה</button>
-                    &nbsp; או&nbsp;
-                    <a href="/#!/signin" class="show-signup">למסך הכניסה</a>
+
                 </div>
                 <div data-ng-show="error" class="text-center text-danger">
                     <strong data-ng-bind="error"></strong>
                 </div>
             </fieldset>
         </form>
+    </div>
+<div style="clear: both;"></div>
+    <div class="row text-center">
+        <div style="font-size: 16px;">בלחיצה על כפתור הרשמה הנך מאשר את<a href="" ng-click="showTakanon()"> תנאי השימוש </a> באתר.</div>
+        <button type="submit" class="btn btn-large btn-primary">הרשמה</button>
+        &nbsp; או&nbsp;
+        <a href="/#!/signin" class="show-signup">למסך הכניסה</a>
     </div>
 </section>
