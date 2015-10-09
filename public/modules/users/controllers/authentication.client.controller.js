@@ -25,7 +25,7 @@ angular.module('users').controller('AuthenticationController',
       };
 
       $scope.showTakanon = function () {
-        alert('xxx');
+       // alert('xxx');
         var modalInstance = $modal.open({
           animation: true,
           templateUrl: 'modules/users/views/authentication/takanon.html',
