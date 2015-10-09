@@ -460,6 +460,9 @@ angular.module('users').config([
     $stateProvider.state('profile', {
       url: '/settings/profile',
       templateUrl: 'modules/users/views/settings/edit-profile.client.view.html'
+    }).state('takanon', {
+      url: '/takanon',
+      templateUrl: 'modules/users/views/authentication/takanon.html'
     }).state('password', {
       url: '/settings/password',
       templateUrl: 'modules/users/views/settings/change-password.client.view.html'
@@ -492,7 +495,9 @@ angular.module('users').controller('AuthenticationController', [
   '$http',
   '$location',
   'Authentication',
-  function ($scope, $http, $location, Authentication) {
+  '$modal',
+  '$state',
+  function ($scope, $http, $location, Authentication, $modal, $state) {
     $scope.authentication = Authentication;
     // If user is signed in then redirect back home
     if ($scope.authentication.user)
@@ -507,6 +512,14 @@ angular.module('users').controller('AuthenticationController', [
       }).error(function (response) {
         $scope.error = response.message;
       });
+    };
+    $scope.showTakanon = function () {
+      alert('xxx');
+      var modalInstance = $modal.open({
+          animation: true,
+          templateUrl: 'modules/users/views/authentication/takanon.html',
+          size: 'lg'
+        });
     };
     $scope.signin = function () {
       $http.post('/auth/signin', $scope.credentials).success(function (response) {

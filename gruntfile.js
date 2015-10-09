@@ -163,8 +163,8 @@ module.exports = function (grunt) {
   grunt.registerTask('lint', ['jshint', 'csslint']);
 
   // Build task(s).
-  //grunt.registerTask('build', ['lint', 'loadConfig', 'ngmin', 'cssmin']);
-  grunt.registerTask('build', ['lint', 'loadConfig', 'cssmin']);
+  grunt.registerTask('build', ['lint', 'loadConfig', 'ngmin', 'cssmin']);
+//  grunt.registerTask('build', ['lint', 'loadConfig', 'cssmin']);
 
   grunt.registerTask('heroku', ['build']);
   grunt.registerTask('heroku:integration', ['build']);
