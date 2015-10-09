@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('users').controller('AuthenticationController',
-  ['$scope', '$http', '$location', 'Authentication', '$modal',
-    function ($scope, $http, $location, Authentication, $modal) {
+  ['$scope', '$http', '$location', 'Authentication', '$modal','$state',
+    function ($scope, $http, $location, Authentication, $modal,$state) {
       $scope.authentication = Authentication;
 
       // If user is signed in then redirect back home
@@ -25,6 +25,7 @@ angular.module('users').controller('AuthenticationController',
       };
 
       $scope.showTakanon = function () {
+
         var modalInstance = $modal.open({
           animation: true,
           templateUrl: 'modules/users/views/authentication/takanon.html',
